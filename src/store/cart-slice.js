@@ -1,14 +1,20 @@
-const { createSlice, current } = require("@reduxjs/toolkit");
+const { createSlice } = require("@reduxjs/toolkit");
 
 const itemSlice = createSlice({
   name: "item",
   initialState: { items: [], totalQuantity: 0 },
   reducers: {
+    replaceItem(state, action) {
+      state.totalQuantity = action.payload.totalQuantity;
+      state.items = action.payload.items;
+    },
+
     addItem(state, action) {
       const newItem = action.payload;
       const existingItem = state.items.find(
         (item) => item.itemId === newItem.id
       );
+      /**리덕스 tollkit은 proxy기반이므로 저장값을 확인하기 위해서는 current를 사용해야 한다. */
       //   console.log("existingItem", current(state.items));
       state.totalQuantity++;
       if (!existingItem) {
